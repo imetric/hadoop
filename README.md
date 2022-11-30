@@ -136,20 +136,38 @@ hadoop 用户增加管理员权限，方便部署：
     $JAVA_HOME/bin/java -version  # 与直接执行 java -version 一样
 
 
+#### 1.3.3 修改HOSTS
+
+输入以下命令，进入hosts文件编辑界面。hosts文件存在于/etc/hosts
+
+```
+sudo vi /etc/hosts
+```
+
+删除以下内容
+```
+127.0.1.1 localhost.localdomain VM-0-2-ubuntu
+```
+
+增加以一上内容，这样就可以直接使用hadoop01来访问这台主机了。注意10.206.0.2为你主机的内网IP地址、
+```
+10.206.0.2 hadoop01
+```
+
 ### 1.4 Hadoop单机部署
 
-#### 下载
+#### 1.4.1 下载
 
     wget https://mirrors.bfsu.edu.cn/apache/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz
 
-#### 解压
+#### 1.4.2 解压
 
     sudo tar -zxvf hadoop-3.3.4.tar.gz -C /usr/local/
     cd /usr/local
     sudo mv  hadoop-3.3.4    hadoop #重命名为hadoop
     sudo chown -R hadoop ./hadoop                        #修改文件权限
 
-#### 配置Hadoop环境
+#### 1.4.3 配置Hadoop环境
 
     vi ~/.bashrc
 
@@ -164,7 +182,7 @@ hadoop 用户增加管理员权限，方便部署：
 
     source ~/.bashrc
 
-#### 修改配置文件
+#### 1.4.4 修改配置文件
 
 在 /usr/local/hadoop/etc/hadoop/hadoop-env.sh 文件中，增加以下内容。
 
@@ -177,7 +195,7 @@ hadoop 用户增加管理员权限，方便部署：
 
 > 如是使用Putty远程连接到服务器，可以使用vi直接修改，也可以用FileZilla软件将待修改的文件下载到本地修改后，再上传到服务器
 
-#### 验证单机安装
+#### 1.4.5 验证单机安装
 
 进入 /usr/local/hadoop/ 目录，运行以下命令后，查看运行结果，并分析结果。
 
@@ -186,3 +204,58 @@ hadoop 用户增加管理员权限，方便部署：
     cp etc/hadoop/*.xml input
     bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.1.jar grep input output 'dfs[a-z.]+'
     cat output/*
+
+### 1.4 伪分布式
+
+#### 1.5.1 修改配置文件
+
+修改 /usr/local/hadoop/etc/hadoop/core-site.xml
+
+    vi /usr/local/hadoop/etc/hadoop/core-site.xml
+
+<!---->
+
+    <configuration>
+        <property>
+            <name>fs.defaultFS</name>
+            <value>hdfs://localhost:9000</value>
+        </property>
+    </configuration>
+
+修改 /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+
+    vi /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+
+<!---->
+
+    <configuration>
+        <property>
+            <name>dfs.replication</name>
+            <value>1</value>
+        </property>
+        <property>
+            <name>dfs.webhdfs.enabled</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>dfs.permissions</name>
+            <value>false</value>
+        </property>
+        <property>
+            <name>dfs.web.ugi</name>
+               <value>supergroup</value>
+        </property>
+    </configuration>
+
+#### 1.5.2 设置无密码登录
+
+    ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+    cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+    chmod 0600 ~/.ssh/authorized_keys
+
+#### 1.5.3 启动hadoop
+
+    bin/hdfs namenode -format #格式化HDFS
+    sbin/start-all.sh #启动
+
+访问<http://ip:9870，看是否可以访问。>
