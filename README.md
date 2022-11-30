@@ -36,7 +36,21 @@ description: 安装部署Hadoop，安装开发环境等
 
 <figure><img src=".gitbook/assets/WechatIMG568.jpeg" alt=""><figcaption></figcaption></figure>
 
-### 1.2 登录腾讯云服务器
+### 1.2 配置服务器安全策略
+
+进入腾讯云后台，进入实例列表。选择对应的服务器，点击更多->安全组->配置安全组。
+
+再点击对应的安全组名称进入编辑界面。
+
+点击添加规则，来源：0.0.0.0/0，协议端口：ALL，策略：允许
+
+<figure><img src=".gitbook/assets/WechatIMG569.jpeg" alt=""><figcaption></figcaption></figure>
+
+<figure><img src=".gitbook/assets/WechatIMG570.jpeg" alt=""><figcaption></figcaption></figure>
+
+
+
+### 1.3 登录腾讯云服务器
 
 本节使用Putty登录服务器，并对远程服务器进行管理和操作。
 
@@ -59,7 +73,6 @@ Putty安装包
 <figure><img src=".gitbook/assets/d110760f8731eb7b842042f37a51f2ec.png" alt=""><figcaption></figcaption></figure>
 
 ## 二、服务器配置
-
 
 ### 2.1 创建hadoop用户
 
@@ -422,3 +435,132 @@ sbin/start-all.sh #启动
 ```
 
 访问http://ip:9870，看是否可以访问。
+
+## 四、Python开发环境配置
+
+### 4.1 安装Anaconda
+
+#### 4.1.1 下载anaconda
+
+输入以下命令
+
+```
+cd ~/
+wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2022.10-Linux-x86_64.sh
+```
+
+#### 4.1.2 安装
+
+输入以下命令
+
+```
+bash Anaconda3-2022.10-Linux-x86_64.sh
+```
+
+<figure><img src=".gitbook/assets/v2-d9f4992b920fd0b2cd43eccf2fa8a136_1440w.webp" alt=""><figcaption></figcaption></figure>
+
+回车后查看许可证，按 q 退出许可证，然后输入 yes 表示同意
+
+<figure><img src=".gitbook/assets/v2-b57c620be6cd8ba8e7439b30e5c0bd9e_1440w.webp" alt=""><figcaption></figcaption></figure>
+
+确认安装的路径，一般直接回车安装在默认的 /home/hadoop/anaconda3
+
+<figure><img src=".gitbook/assets/v2-e5a09a43cda1a73dc1a464167b5ab9ad_r.jpeg" alt=""><figcaption></figcaption></figure>
+
+很快就安装完毕。输入 yes 来确认使用 conda init 来启动
+
+<figure><img src=".gitbook/assets/v2-0a7e4041eb7d36edfc02aeab89cdabb3_r.jpeg" alt=""><figcaption></figcaption></figure>
+
+### 4.2 启动环境变量
+
+如果现在输入 conda，会显示找不到命令，如：conda: command not found。需要启动已经修改环境变量，输入以下命令（以后都不用再 source 了，因为启动 Ubuntu 会自动 source）
+
+```
+source ~/.bashrc
+```
+
+这时候会发现出现了 (base)
+
+### 4.3 创建虚拟环境
+
+输入以下命令创建名为 hadoop 的虚拟环境，python 版本为 3.9
+
+```
+conda create -n hadoop python=3.9
+```
+
+安装时，输入y或yes，回车后将自动安装
+
+### 4.4 进入虚拟环境
+
+输入以下命令进入我们创建的虚拟环境 hadoop
+
+```
+conda activate hadoop
+```
+
+可以看到前缀已经从 base 变成了 hadoop，你输入 python 后可以看到，python 版本为 3.9.7
+
+<figure><img src=".gitbook/assets/WechatIMG571.jpeg" alt=""><figcaption></figcaption></figure>
+
+### 4.5 修改Anaconda 镜像
+
+使用清华大学的镜像来提升下载速度
+
+输入如下命令编辑镜像地址
+
+```
+vi ~/.condarc
+```
+
+在新文件中添加以下内容
+
+```
+channels:
+  - defaults
+show_channel_urls: true
+default_channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2
+custom_channels:
+  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  pytorch-lts: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+  simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud
+```
+
+添加后，在命令窗口运行
+
+```
+conda clean -i
+```
+
+### 4.6 添加 python 模块
+
+#### 4.6.1 添加HDFS访问模块
+
+我们使用PyArrow来访问HDFS文件。
+
+用于Apache Arrow的Python库。这个库为Arrow c++库提供的功能提供了Python API，以及用于与panda、NumPy和Python生态系统中的其他软件进行箭头集成和互操作性的工具。Apache Arrow是一个用于内存分析的开发平台。它包含一组技术，使大数据系统能够快速处理和移动数据。&#x20;
+
+输入以下命令安装
+
+```
+conda activate hadoop
+conda install -c conda-forge pyarrow
+```
+
+#### 4.6.2 添加MapReduce模块mrjob
+
+mrjob是用来写能在hadoop运行的python程序的最简便方法。其最突出的特点就是在mrjob的帮助下，无需安装hadoop或部署任何集群，我们可以在本地机器上运行代码（进行测试）。同时，mrjob可以轻松运行于Amazon Elastic MapReduce。 为了达到简便实用的目的，一些功能被mrjob省去了。如果追求更多的功能，可以尝试Dumbo，Pydoop等package。
+
+输入以下命令安装
+
+```
+conda activate hadoop
+conda install -c conda-forge mrjob
+```
