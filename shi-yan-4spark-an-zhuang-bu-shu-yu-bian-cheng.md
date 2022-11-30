@@ -13,23 +13,39 @@
 
 ## 三、实验内容和要求
 
-### 1 部署Spark集群
+### 1 安装Spart所需环境Scala
 
-#### 1.1 安装Spark所需环境
-安装Scala
+#### 1.1 安装Scala
 
-在每台服务器都需要安装Scala，
-1. 使用命令sudo apt install scala进行在线安装scala
-2. 使用命令scala –version检查scala是否安装成功
-3. 使用命令which scala查看scala的安装位置路径
-4. 与JDK一样，使用命令sudo vi /etc/profile 修改环境变量的配置文件,之后使用命令 source /etc/profile，使文件修改生效。增加
-5. 
+使用命令进行在线安装scala
+
+```
+sudo apt install scala
+```
+
+#### 1.2 配置环境变量
+
+与JDK一样，使用以下命令，修改环境变量的配置文件。
+
+```
+sudo vi /etc/profile 
+```
+在/etc/profile文件中增加以下代码
+
 ```
 export SCALA_HOME=/usr/bin/scala
 export PATH=$PATH:$SCALA_HOME/bin
 ```
+之后使用命令 source /etc/profile，使文件修改生效。
 
-#### 1.2 下载Spark
+```
+source /etc/profile
+```
+
+### 2 部署Spark集群
+
+
+#### 2.1 下载Spark
 在hadoop01节点上，执行以下操作：
 ```
 wget https://mirrors.bfsu.edu.cn/apache/spark/spark-3.2.0/spark-3.2.0-bin-hadoop3.2.tgz
@@ -38,7 +54,7 @@ cd /usr/local
 sudo mv  spark-3.2.0-bin-hadoop3.2    spark #重命名为 spark
 sudo chown -R hadoop ./spark                        #修改文件权限
 ```
-#### 1.3 配置Spark
+#### 2.2 配置Spark
 配置spark-env.sh文件
 ```
 cd /usr/local/spark
@@ -60,40 +76,27 @@ vi conf/slaves
 将以下内容添加到slaves文件中
 ```
 hadoop01
-hadoop02
-hadoop03
-```
-
-#### 1.4 将Spark文件拷贝到其它节点
-```
-scp -r /usr/local/spark root@hadoop02:/usr/local
-scp -r /usr/local/spark root@hadoop03:/usr/local
-
-```
-分别修改hadoop02、hadoop03中spark目录的权限，分别登录hadoop02、hadoop03，分别执行
-```
-sudo chown -R hadoop ./spark 
 ```
 
 
 
-### 2 使用Spark Shell编写代码
+### 3 使用Spark Shell编写代码
 
-#### 2.1进入Spark Shell
+#### 3.1进入Spark Shell
 
 ```
 cd /usr/local/spark/
 bin/spark-shell
 ```
 
-#### 2.2 加载text文件
+#### 3.2 加载text文件
 spark创建sc，可以加载本地文件和HDFS文件创建RDD。这里用Spark自带的本地文件README.md文件测试。
 ```
 scala>val textFile=sc.textFile("file:///usr/local/spark/README.md")
 ```
 加载HDFS文件和本地文件都是使用textFile，区别是添加前缀(hdfs://和file://)进行标识。
 
-#### 2.3 wordcount实例
+#### 3.3 wordcount实例
 ```
 val textFile = sc.textFile("hdfs://...")
 val counts = textFile.flatMap(line => line.split(" "))
@@ -101,7 +104,7 @@ val counts = textFile.flatMap(line => line.split(" "))
                  .reduceByKey(_ + _)
 counts.saveAsTextFile("hdfs://...")
 ```
-#### 2.4 Pi 估算
+#### 3.4 Pi 估算
 ```
 val count = sc.parallelize(1 to NUM_SAMPLES).filter { _ =>
   val x = math.random
