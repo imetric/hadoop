@@ -233,7 +233,6 @@ vi /usr/local/hadoop/etc/hadoop/hadoop-env.sh
 ```
 
 ```
-# set to the root of your Java installation
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ```
 
@@ -247,7 +246,7 @@ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 cd /usr/local/hadoop/
 mkdir input
 cp etc/hadoop/*.xml input
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.1.jar grep input output 'dfs[a-z.]+'
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.4.jar grep input output 'dfs[a-z.]+'
 cat output/*
 ```
 
@@ -264,7 +263,7 @@ vi /usr/local/hadoop/etc/hadoop/hadoop-env.sh
 hadoop-env.sh中，添加如下代码：
 
 ```
-export JAVA\_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ```
 
 **修改 /usr/local/hadoop/etc/hadoop/hadoop-env.sh**
@@ -276,7 +275,7 @@ vi /usr/local/hadoop/etc/hadoop/yarn-env.sh
 yarn-env.sh中，添加如下代码：
 
 ```
-export JAVA\_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ```
 
 **修改 /usr/local/hadoop/etc/hadoop/core-site.xml**
