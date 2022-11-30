@@ -194,13 +194,59 @@ pd.txt表示品牌信息，每一行表示一个品牌，第一列表示品牌id
 hadoop实现join操作的思路
 
 具体思路是给每个数据源加上一个数字标记label，这样hadoop对其排序后同一个字段的数据排在一起并且按照label排好序了，于是直接将相邻相同key的数据合并在一起输出就得到了结果。
-1. map阶段：给order.txt和表pd.txt加标记，其实就是多输出一个字段，比如order.txt加标记为1，pd.txt加标记为2；
+1. map阶段：给order.txt和表pd.txt加标记，其实就是多输出一个字段，比如pd.txt加标记为a,order.txt加标记为b；
 2. partion阶段：根据品牌id(pid)为第一主键，标记label为第二主键进行排序和分区
 3. reduce阶段：由于已经按照第一主键、第二主键排好了序，将相邻相同key数据合并输出
 
+#### 2.4 操作
 
+运行以下命令，下载order.txt、pd.txt
 
+```
+cd ~/code/
+mkdir join 
+cd join
+wget https://raw.githubusercontent.com/imetric/hadoop/master/data/join/pd.txt
+wget https://raw.githubusercontent.com/imetric/hadoop/master/data/join/order.txt
 
+```
+
+在~/code目录下，创建join.py文件，文件内容参考：
+```
+from mrjob.job import MRJob
+
+class MRJoin(MRJob):
+
+    def mapper(self, _, line):
+        #将每一行文字拆分
+        words = line.split()
+        if len(words)==2:#如果拆分出2列，则是 pd.txt
+            key = words[0]
+            yield (key, ('a',line))
+        elif len(words)==3: #如果拆分出3列，则是 order.txt
+            key = words[1]
+            yield (key, ('b',line))
+
+    def reducer(self, key, values):
+        brand = None
+        lines = list(values)
+        # 遍历values，找也品牌名称
+        # 判断数据来源
+        for (seed, line) in lines:
+            ws = line.split()
+            if seed == 'a':
+                brand = ws[1]
+                break
+        # 遍历打印
+        for (seed, line) in lines:
+            ws = line.split()
+            if seed == 'b':
+                value = '{} {}  {}'.format(ws[0],brand,ws[2])
+                yield("",value)
+
+if __name__ == '__main__':
+    MRJoin.run()
+```
 
 ## 参考内容
 - [https://raw.githubusercontent.com/Yelp/mrjob/master/mrjob/examples/](https://github.com/Yelp/mrjob/blob/master/mrjob/examples)
