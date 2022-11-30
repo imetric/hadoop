@@ -135,3 +135,54 @@ hadoop 用户增加管理员权限，方便部署：
     java -version
     $JAVA_HOME/bin/java -version  # 与直接执行 java -version 一样
 
+
+### 1.4 Hadoop单机部署
+
+#### 下载
+
+    wget https://mirrors.bfsu.edu.cn/apache/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz
+
+#### 解压
+
+    sudo tar -zxvf hadoop-3.3.4.tar.gz -C /usr/local/
+    cd /usr/local
+    sudo mv  hadoop-3.3.4    hadoop #重命名为hadoop
+    sudo chown -R hadoop ./hadoop                        #修改文件权限
+
+#### 配置Hadoop环境
+
+    vi ~/.bashrc
+
+给hadoop配置环境变量，将下面代码添加到.bashrc文件:
+
+    export HADOOP_HOME=/usr/local/hadoop
+    export CLASSPATH=$($HADOOP_HOME/bin/hadoop classpath):$CLASSPATH
+    export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+    export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+
+同样，执行source \~/.bashrc使设置生效，并查看hadoop是否安装成功
+
+    source ~/.bashrc
+
+#### 修改配置文件
+
+在 /usr/local/hadoop/etc/hadoop/hadoop-env.sh 文件中，增加以下内容。
+
+    vi /usr/local/hadoop/etc/hadoop/hadoop-env.sh 
+
+<!---->
+
+    # set to the root of your Java installation
+    export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+> 如是使用Putty远程连接到服务器，可以使用vi直接修改，也可以用FileZilla软件将待修改的文件下载到本地修改后，再上传到服务器
+
+#### 验证单机安装
+
+进入 /usr/local/hadoop/ 目录，运行以下命令后，查看运行结果，并分析结果。
+
+    cd /usr/local/hadoop/
+    mkdir input
+    cp etc/hadoop/*.xml input
+    bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.1.jar grep input output 'dfs[a-z.]+'
+    cat output/*
