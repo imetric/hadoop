@@ -124,8 +124,22 @@ if __name__ == '__main__':
 
 ```
 cd ~/code
-python wordcount.py =r hadoop word.txt>wordout.txt
+python wordcount.py -r hadoop word.txt>wordcount.txt
 ```
+执行以上命令时，系统会自动将服务器上的文件word.txt上传到HDFS中，并且运行Mapreduce任务。Mapreduce任务运行完成后，会自动下载运行结果到服务器上，并保存为wordcount.txt文件。
+
+### 4.查看运行结果
+
+可以通过以下命令，直接在命令窗口查看运行结果。
+```
+cat ~/code/wordcount.txt
+```
+
+也可以使用Filezilla下载文件到自己电脑进行查看。
+
+## 四、思考
+
+上面的实验内容是统计一个文本文件中的单词个数，如果要同时统计多个文件中单词的个数，请问如何操作？
 
 ## 参考内容
 - [https://raw.githubusercontent.com/Yelp/mrjob/master/mrjob/examples/](https://github.com/Yelp/mrjob/blob/master/mrjob/examples)
