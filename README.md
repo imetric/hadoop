@@ -209,43 +209,149 @@ sudo vi /etc/hosts
 
 #### 1.5.1 修改配置文件
 
-修改 /usr/local/hadoop/etc/hadoop/core-site.xml
+##### 修改 /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+
+    vi /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+
+
+hadoop-env.sh中，添加如下代码：   
+
+    export JAVA\_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+##### 修改 /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+
+    vi /usr/local/hadoop/etc/hadoop/yarn-env.sh
+
+
+yarn-env.sh中，添加如下代码：   
+
+    export JAVA\_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+
+
+
+
+##### 修改 /usr/local/hadoop/etc/hadoop/core-site.xml
 
     vi /usr/local/hadoop/etc/hadoop/core-site.xml
 
+在core-site.xml文件的<configuration>中增加以下内容。
+    
 <!---->
 
     <configuration>
-        <property>
-            <name>fs.defaultFS</name>
-            <value>hdfs://localhost:9000</value>
+	    <property>
+                <name>fs.defaultFS</name>
+                <value>hdfs://hadoop01:9000</value>
         </property>
-    </configuration>
+        <property>
+                <name>hadoop.tmp.dir</name>
+                <value>/usr/local/hadoop/temp</value>
+        </property>
+	</configuration>
 
-修改 /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+##### 修改 /usr/local/hadoop/etc/hadoop/hdfs-site.xml
 
     vi /usr/local/hadoop/etc/hadoop/hdfs-site.xml
 
+在hdfs-site.xml文件的<configuration>中增加以下内容。
+    
+    
+<!---->
+
+    <configuration>
+	    <property>
+                <name>dfs.namenode.secondary.http-address</name>
+                <value>hadoop01:9001</value>
+        </property>
+        <property>
+                <name>dfs.namenode.name.dir</name>
+                <value>file://${hadoop.tmp.dir}/dfs/name</value>
+        </property>
+        <property>
+                <name>dfs.datanode.data.dir</name>
+                <value>file://${hadoop.tmp.dir}/dfs/data</value>
+        </property>
+        <property>
+                <name>dfs.replication</name>
+                <value>1</value>
+        </property>
+        <property>
+                <name>dfs.webhdfs.enabled</name>
+                <value>true</value>
+        </property>
+        <property>
+                <name>dfs.permissions</name>
+                <value>false</value>
+        </property>
+        <property>
+                <name>dfs.web.ugi</name>
+               	<value>supergroup</value>
+        </property>
+        <property>
+            <name>dfs.datanode.use.datanode.hostname</name>
+            <value>true</value>
+        </property>
+    </configuration>
+
+##### 修改 /usr/local/hadoop/etc/hadoop/mapred-site.xml
+
+    vi /usr/local/hadoop/etc/hadoop/mapred-site.xml
+ 
+在mapred-site.xml文件的<configuration>中增加以下内容。
+    
+
 <!---->
 
     <configuration>
         <property>
-            <name>dfs.replication</name>
-            <value>1</value>
+                <name>mapreduce.framework.name</name>
+                <value>yarn</value>
         </property>
         <property>
-            <name>dfs.webhdfs.enabled</name>
-            <value>true</value>
+          <name>yarn.app.mapreduce.am.env</name>
+          <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
         </property>
         <property>
-            <name>dfs.permissions</name>
-            <value>false</value>
+          <name>mapreduce.map.env</name>
+          <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
         </property>
         <property>
-            <name>dfs.web.ugi</name>
-               <value>supergroup</value>
+          <name>mapreduce.reduce.env</name>
+          <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
         </property>
     </configuration>
+
+##### 修改 /usr/local/hadoop/etc/hadoop/yarn-site.xml
+
+    vi /usr/local/hadoop/etc/hadoop/yarn-site.xml
+
+在yarn-site.xml文件的<configuration>中增加以下内容。
+    
+    
+<!---->
+
+    <configuration>
+        <property>
+                <name>yarn.nodemanager.aux-services</name>
+                <value>mapreduce_shuffle</value>
+        </property>
+        <property>
+                <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+                <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+        </property>
+    </configuration>
+
+##### 修改 /usr/local/hadoop/etc/hadoop/workers.sh
+
+    vi /usr/local/hadoop/etc/hadoop/workers
+
+
+works中，保留以下内容 
+
+    hadoop01
+
+
 
 #### 1.5.2 设置无密码登录
 
