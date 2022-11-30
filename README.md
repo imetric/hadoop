@@ -60,9 +60,8 @@ Putty安装包
 
 ## 二、服务器配置
 
-### 1.1 配置服务器
 
-#### 2.1.1 创建hadoop用户
+### 2.1 创建hadoop用户
 
 创建用户：
 
@@ -90,7 +89,7 @@ su - hadoop                          #切换当前用户为用户hadoop
 
 分别运行上面命令后，系统中创建一个用户名为hadoop的用户，该用户拥有管理员权限，并使用hadoop用户登录当前系统。
 
-#### 2.1.2 安装最新版本的Java
+### 2.2 安装最新版本的Java
 
 更新软件列表
 
@@ -165,7 +164,7 @@ java -version
 $JAVA_HOME/bin/java -version  # 与直接执行 java -version 一样
 ```
 
-#### 2.1.3 修改HOSTS
+### 2.3 修改HOSTS
 
 输入以下命令，进入hosts文件编辑界面。hosts文件存在于/etc/hosts
 
