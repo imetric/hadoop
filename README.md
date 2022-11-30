@@ -430,8 +430,8 @@ chmod 0600 ~/.ssh/authorized_keys
 #### 3.2.3 启动hadoop
 
 ```
-bin/hdfs namenode -format #格式化HDFS
-sbin/start-all.sh #启动
+/usr/local/hadoop/bin/hdfs namenode -format #格式化HDFS
+/usr/local/hadoop/sbin/start-all.sh #启动
 ```
 
 访问http://ip:9870，看是否可以访问。
@@ -446,7 +446,7 @@ sbin/start-all.sh #启动
 
 ```
 cd ~/
-wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2022.10-Linux-x86_64.sh
+wget https://mirrors.bfsu.edu.cn/anaconda/archive/Anaconda3-2022.10-Linux-x86_64.sh
 ```
 
 #### 4.1.2 安装
