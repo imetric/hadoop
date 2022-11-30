@@ -48,10 +48,10 @@ source /etc/profile
 #### 2.1 下载Spark
 在hadoop01节点上，执行以下操作：
 ```
-wget https://mirrors.bfsu.edu.cn/apache/spark/spark-3.2.0/spark-3.2.0-bin-hadoop3.2.tgz
-sudo tar -zxvf spark-3.2.0-bin-hadoop3.2.tgz -C /usr/local/
+wget https://mirrors.bfsu.edu.cn/apache/spark/spark-3.3.1/spark-3.3.1-bin-hadoop3-scala2.13.tgz
+sudo tar -zxvf spark-3.3.1-bin-hadoop3-scala2.13.tgz -C /usr/local/
 cd /usr/local
-sudo mv  spark-3.2.0-bin-hadoop3.2    spark #重命名为 spark
+sudo mv  spark-3.3.1-bin-hadoop3-scala2.13    spark #重命名为 spark
 sudo chown -R hadoop ./spark                        #修改文件权限
 ```
 #### 2.2 配置Spark
@@ -92,17 +92,17 @@ bin/spark-shell
 #### 3.2 加载text文件
 spark创建sc，可以加载本地文件和HDFS文件创建RDD。这里用Spark自带的本地文件README.md文件测试。
 ```
-scala>val textFile=sc.textFile("file:///usr/local/spark/README.md")
+val textFile=sc.textFile("file:///usr/local/spark/README.md")
 ```
-加载HDFS文件和本地文件都是使用textFile，区别是添加前缀(hdfs://和file://)进行标识。
+加载HDFS文件和本地文件都是使用textFile，区别是添加前缀(hdfs://和file://)进行标识。如： hdfs://hadoop01:9000/
 
 #### 3.3 wordcount实例
 ```
-val textFile = sc.textFile("hdfs://...")
+val textFile = sc.textFile("hdfs://hadoop01:9000/spark/README.md")
 val counts = textFile.flatMap(line => line.split(" "))
                  .map(word => (word, 1))
                  .reduceByKey(_ + _)
-counts.saveAsTextFile("hdfs://...")
+counts.saveAsTextFile("hdfs://hadoop01:9000/spark/output")
 ```
 #### 3.4 Pi 估算
 ```
