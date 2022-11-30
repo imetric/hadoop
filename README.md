@@ -59,3 +59,79 @@ Putty安装包
 <figure><img src=".gitbook/assets/d110760f8731eb7b842042f37a51f2ec.png" alt=""><figcaption></figcaption></figure>
 
 ### 1.3 配置服务器
+
+#### 1.3.1 创建hadoop用户
+
+创建用户：
+
+    sudo useradd -m hadoop -s /bin/bash
+
+设置密码，可简单设置为 hadoop，按提示输入两次密码：
+
+    sudo passwd hadoop
+
+hadoop 用户增加管理员权限，方便部署：
+
+    sudo adduser hadoop sudo
+
+用hadoop用户登录
+
+    su - hadoop                          #切换当前用户为用户hadoop
+
+分别运行上面命令后，系统中创建一个用户名为hadoop的用户，该用户拥有管理员权限，并使用hadoop用户登录当前系统。
+
+#### 1.3.2 安装最新版本的Java
+
+更新软件列表
+
+    sudo apt-get update
+
+安装openjdk-8-jdk
+
+    sudo apt-get install openjdk-8-jdk
+
+查看Java版本，如下：
+
+    java -version
+
+安装好 OpenJDK 后，需要找到相应的安装路径
+
+    update-alternatives --config java 
+
+我们输出的路径为
+
+    /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+
+其中，绝对路径为
+
+    /usr/lib/jvm/java-8-openjdk-amd64
+
+接着配置 ***JAVA\_HOME*** 环境变量，为方便，我们在 \~/.bashrc 中进行设置
+
+    sudo vi /etc/profile
+
+在文件最前面添加如下单独一行（注意 = 号前后不能有空格），将“JDK安装路径”改为绝对路径，并保存：
+
+    export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+    export JRE_HOME=$JAVA_HOME/jre
+    export PATH=$JAVA_HOME/bin:$PATH
+    export CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib
+    export HADOOP_HOME=/usr/local/hadoop
+    export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+
+先Ctrl+C拷贝以上内容到粘贴板，
+进入窗口，移动键盘上下键，将光标移动到合适位置，点键盘I，再Ctrl+V粘贴内容。
+再将ESC后，输入以后内容后回车。
+
+    :wq
+
+让该环境变量生效
+
+    source /etc/profile
+
+设置好后我们来检验一下是否设置正确：
+
+    echo $JAVA_HOME     # 检验变量值
+    java -version
+    $JAVA_HOME/bin/java -version  # 与直接执行 java -version 一样
+
