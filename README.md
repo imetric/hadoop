@@ -195,7 +195,7 @@ sudo vi /etc/hosts
 wget https://mirrors.bfsu.edu.cn/apache/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz
 ```
 
-#### 1.4.2 解压
+#### 3.1.2 解压
 
 ```
 sudo tar -zxvf hadoop-3.3.4.tar.gz -C /usr/local/
@@ -204,7 +204,7 @@ sudo mv  hadoop-3.3.4    hadoop #重命名为hadoop
 sudo chown -R hadoop ./hadoop                        #修改文件权限
 ```
 
-#### 1.4.3 配置Hadoop环境
+#### 3.1.3 配置Hadoop环境
 
 ```
 vi ~/.bashrc
@@ -225,7 +225,7 @@ export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 source ~/.bashrc
 ```
 
-#### 1.4.4 修改配置文件
+#### 3.1.4 修改配置文件
 
 在 /usr/local/hadoop/etc/hadoop/hadoop-env.sh 文件中，增加以下内容。
 
@@ -240,7 +240,7 @@ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 > 如是使用Putty远程连接到服务器，可以使用vi直接修改，也可以用FileZilla软件将待修改的文件下载到本地修改后，再上传到服务器
 
-#### 1.4.5 验证单机安装
+#### 3.1.5 验证单机安装
 
 进入 /usr/local/hadoop/ 目录，运行以下命令后，查看运行结果，并分析结果。
 
@@ -252,9 +252,9 @@ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.1.jar grep i
 cat output/*
 ```
 
-### 1.4 伪分布式
+### 3.2 伪分布式
 
-#### 1.5.1 修改配置文件
+#### 3.2.1 修改配置文件
 
 **修改 /usr/local/hadoop/etc/hadoop/hadoop-env.sh**
 
@@ -408,7 +408,7 @@ works中，保留以下内容
 hadoop01
 ```
 
-#### 1.5.2 设置无密码登录
+#### 3.2.2 设置无密码登录
 
 ```
 ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
@@ -416,7 +416,7 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 0600 ~/.ssh/authorized_keys
 ```
 
-#### 1.5.3 启动hadoop
+#### 3.2.3 启动hadoop
 
 ```
 bin/hdfs namenode -format #格式化HDFS
