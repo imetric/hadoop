@@ -1,2 +1,132 @@
-# 实验2、MapReduce编程实践
 
+# 实验1、HDFS编辑实践
+
+
+## 一、实验目的
+1.	通过实验掌握基本的MapReduce编程方法；
+2.  掌握用MapReduce解决一些常见的数据处理问题，包括数据去重、数据排序和数据挖掘等。
+
+
+
+## 二、实验平台
+
+1. 操作系统：Linux
+2. Hadoop版本：3.0.0或以上版本
+3. Python版本：3.7或以上版本
+
+
+## 三、实验前准备
+
+> 首先通过SSH远程连接到服务器，并执行以下命令，进入python的环境
+
+
+### 1.登录服务器
+
+如果服务器是远程（如购买的云服务器），使用用户名hadoop进行登录，可以使用Putty软件远程连接服务器进行操作，详见。
+
+### 2.进入虚拟环境
+
+输入以下命令进入我们创建的虚拟环境 hadoop
+
+```
+conda activate hadoop
+```
+
+### 3.在本地创建创建python文件
+
+在本地创建一个wordcount.py文件，其中hdfs是文件名，可以自定义。hdfs.py文件的代码如下：
+
+``` 
+from mrjob.job import MRJob
+import re
+
+WORD_RE = re.compile(r"[\w']+")
+
+
+class MRWordFreqCount(MRJob):
+
+    def mapper(self, _, line):
+        for word in WORD_RE.findall(line):
+            yield (word.lower(), 1)
+
+    def combiner(self, word, counts):
+        yield (word, sum(counts))
+
+    def reducer(self, word, counts):
+        yield (word, sum(counts))
+
+
+if __name__ == '__main__':
+    MRWordFreqCount.run()
+```
+
+### 4.使用Filezila软件进行文件传输
+
+编写的Python代码可以在本地电脑上编辑，编辑完成后，上传到服务器上运行。
+
+本地文件可以使用Filezila软件上传到服务器。
+
+
+
+## 三、实验内容和要求
+
+本实验使用Hadoop对指定文件统计各单词出现的次数。
+
+### 1.准备文本文件
+
+连接服务器，进入~/code文件夹，如果没有创建code文件夹，先创建。
+
+```
+mkdir ~/code
+cd ~/code
+```
+
+运行以下命令，下载wordcount.txt
+
+```
+cd ~/code
+wget https://raw.githubusercontent.com/imetric/hadoop/master/data/word.txt
+```
+
+### 2.编写wordcount代码
+
+可以将wordcount.py代码在本地电脑上进行编辑，编辑完成后，将文件上传到服务器上，建议存放在~/code/目录下。
+
+> wordcount.py文件内容
+
+```
+from mrjob.job import MRJob
+import re
+
+WORD_RE = re.compile(r"[\w']+")
+
+
+class MRWordFreqCount(MRJob):
+
+    def mapper(self, _, line):
+        for word in WORD_RE.findall(line):
+            yield (word.lower(), 1)
+
+    def combiner(self, word, counts):
+        yield (word, sum(counts))
+
+    def reducer(self, word, counts):
+        yield (word, sum(counts))
+
+
+if __name__ == '__main__':
+    MRWordFreqCount.run()
+```
+
+### 3.执行wordcount.py
+
+在服务器端口执行以下代码运行。
+
+```
+cd ~/code
+python wordcount.py =r hadoop word.txt>wordout.txt
+```
+
+## 参考内容
+- [https://raw.githubusercontent.com/Yelp/mrjob/master/mrjob/examples/](https://github.com/Yelp/mrjob/blob/master/mrjob/examples)
+- 
