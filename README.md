@@ -58,85 +58,114 @@ Putty安装包
 
 <figure><img src=".gitbook/assets/d110760f8731eb7b842042f37a51f2ec.png" alt=""><figcaption></figcaption></figure>
 
-### 1.3 配置服务器
+## 二、服务器配置
 
-#### 1.3.1 创建hadoop用户
+### 1.1 配置服务器
+
+#### 2.1.1 创建hadoop用户
 
 创建用户：
 
-    sudo useradd -m hadoop -s /bin/bash
+```
+sudo useradd -m hadoop -s /bin/bash
+```
 
 设置密码，可简单设置为 hadoop，按提示输入两次密码：
 
-    sudo passwd hadoop
+```
+sudo passwd hadoop
+```
 
 hadoop 用户增加管理员权限，方便部署：
 
-    sudo adduser hadoop sudo
+```
+sudo adduser hadoop sudo
+```
 
 用hadoop用户登录
 
-    su - hadoop                          #切换当前用户为用户hadoop
+```
+su - hadoop                          #切换当前用户为用户hadoop
+```
 
 分别运行上面命令后，系统中创建一个用户名为hadoop的用户，该用户拥有管理员权限，并使用hadoop用户登录当前系统。
 
-#### 1.3.2 安装最新版本的Java
+#### 2.1.2 安装最新版本的Java
 
 更新软件列表
 
-    sudo apt-get update
+```
+sudo apt-get update
+```
 
 安装openjdk-8-jdk
 
-    sudo apt-get install openjdk-8-jdk
+```
+sudo apt-get install openjdk-8-jdk
+```
 
 查看Java版本，如下：
 
-    java -version
+```
+java -version
+```
 
 安装好 OpenJDK 后，需要找到相应的安装路径
 
-    update-alternatives --config java 
+```
+update-alternatives --config java 
+```
 
 我们输出的路径为
 
-    /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+```
+/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+```
 
 其中，绝对路径为
 
-    /usr/lib/jvm/java-8-openjdk-amd64
+```
+/usr/lib/jvm/java-8-openjdk-amd64
+```
 
-接着配置 ***JAVA\_HOME*** 环境变量，为方便，我们在 \~/.bashrc 中进行设置
+接着配置 _**JAVA\_HOME**_ 环境变量，为方便，我们在 \~/.bashrc 中进行设置
 
-    sudo vi /etc/profile
+```
+sudo vi /etc/profile
+```
 
 在文件最前面添加如下单独一行（注意 = 号前后不能有空格），将“JDK安装路径”改为绝对路径，并保存：
 
-    export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-    export JRE_HOME=$JAVA_HOME/jre
-    export PATH=$JAVA_HOME/bin:$PATH
-    export CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib
-    export HADOOP_HOME=/usr/local/hadoop
-    export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+```
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JRE_HOME=$JAVA_HOME/jre
+export PATH=$JAVA_HOME/bin:$PATH
+export CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib
+export HADOOP_HOME=/usr/local/hadoop
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+```
 
-先Ctrl+C拷贝以上内容到粘贴板，
-进入窗口，移动键盘上下键，将光标移动到合适位置，点键盘I，再Ctrl+V粘贴内容。
-再将ESC后，输入以后内容后回车。
+先Ctrl+C拷贝以上内容到粘贴板， 进入窗口，移动键盘上下键，将光标移动到合适位置，点键盘I，再Ctrl+V粘贴内容。 再将ESC后，输入以后内容后回车。
 
-    :wq
+```
+:wq
+```
 
 让该环境变量生效
 
-    source /etc/profile
+```
+source /etc/profile
+```
 
 设置好后我们来检验一下是否设置正确：
 
-    echo $JAVA_HOME     # 检验变量值
-    java -version
-    $JAVA_HOME/bin/java -version  # 与直接执行 java -version 一样
+```
+echo $JAVA_HOME     # 检验变量值
+java -version
+$JAVA_HOME/bin/java -version  # 与直接执行 java -version 一样
+```
 
-
-#### 1.3.3 修改HOSTS
+#### 2.1.3 修改HOSTS
 
 输入以下命令，进入hosts文件编辑界面。hosts文件存在于/etc/hosts
 
@@ -145,53 +174,69 @@ sudo vi /etc/hosts
 ```
 
 删除以下内容
+
 ```
 127.0.1.1 localhost.localdomain VM-0-2-ubuntu
 ```
 
 增加以一上内容，这样就可以直接使用hadoop01来访问这台主机了。注意10.206.0.2为你主机的内网IP地址、
+
 ```
 10.206.0.2 hadoop01
 ```
 
-### 1.4 Hadoop单机部署
+## 三、Hadoop配置
 
-#### 1.4.1 下载
+### 3.1 Hadoop单机部署
 
-    wget https://mirrors.bfsu.edu.cn/apache/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz
+#### 3.1.1 下载
+
+```
+wget https://mirrors.bfsu.edu.cn/apache/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz
+```
 
 #### 1.4.2 解压
 
-    sudo tar -zxvf hadoop-3.3.4.tar.gz -C /usr/local/
-    cd /usr/local
-    sudo mv  hadoop-3.3.4    hadoop #重命名为hadoop
-    sudo chown -R hadoop ./hadoop                        #修改文件权限
+```
+sudo tar -zxvf hadoop-3.3.4.tar.gz -C /usr/local/
+cd /usr/local
+sudo mv  hadoop-3.3.4    hadoop #重命名为hadoop
+sudo chown -R hadoop ./hadoop                        #修改文件权限
+```
 
 #### 1.4.3 配置Hadoop环境
 
-    vi ~/.bashrc
+```
+vi ~/.bashrc
+```
 
 给hadoop配置环境变量，将下面代码添加到.bashrc文件:
 
-    export HADOOP_HOME=/usr/local/hadoop
-    export CLASSPATH=$($HADOOP_HOME/bin/hadoop classpath):$CLASSPATH
-    export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
-    export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+```
+export HADOOP_HOME=/usr/local/hadoop
+export CLASSPATH=$($HADOOP_HOME/bin/hadoop classpath):$CLASSPATH
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+```
 
 同样，执行source \~/.bashrc使设置生效，并查看hadoop是否安装成功
 
-    source ~/.bashrc
+```
+source ~/.bashrc
+```
 
 #### 1.4.4 修改配置文件
 
 在 /usr/local/hadoop/etc/hadoop/hadoop-env.sh 文件中，增加以下内容。
 
-    vi /usr/local/hadoop/etc/hadoop/hadoop-env.sh 
+```
+vi /usr/local/hadoop/etc/hadoop/hadoop-env.sh 
+```
 
-<!---->
-
-    # set to the root of your Java installation
-    export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+```
+# set to the root of your Java installation
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+```
 
 > 如是使用Putty远程连接到服务器，可以使用vi直接修改，也可以用FileZilla软件将待修改的文件下载到本地修改后，再上传到服务器
 
@@ -199,169 +244,183 @@ sudo vi /etc/hosts
 
 进入 /usr/local/hadoop/ 目录，运行以下命令后，查看运行结果，并分析结果。
 
-    cd /usr/local/hadoop/
-    mkdir input
-    cp etc/hadoop/*.xml input
-    bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.1.jar grep input output 'dfs[a-z.]+'
-    cat output/*
+```
+cd /usr/local/hadoop/
+mkdir input
+cp etc/hadoop/*.xml input
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.1.jar grep input output 'dfs[a-z.]+'
+cat output/*
+```
 
 ### 1.4 伪分布式
 
 #### 1.5.1 修改配置文件
 
-##### 修改 /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+**修改 /usr/local/hadoop/etc/hadoop/hadoop-env.sh**
 
-    vi /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+```
+vi /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+```
 
+hadoop-env.sh中，添加如下代码：
 
-hadoop-env.sh中，添加如下代码：   
+```
+export JAVA\_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+```
 
-    export JAVA\_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+**修改 /usr/local/hadoop/etc/hadoop/hadoop-env.sh**
 
-##### 修改 /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+```
+vi /usr/local/hadoop/etc/hadoop/yarn-env.sh
+```
 
-    vi /usr/local/hadoop/etc/hadoop/yarn-env.sh
+yarn-env.sh中，添加如下代码：
 
+```
+export JAVA\_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+```
 
-yarn-env.sh中，添加如下代码：   
+**修改 /usr/local/hadoop/etc/hadoop/core-site.xml**
 
-    export JAVA\_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+```
+vi /usr/local/hadoop/etc/hadoop/core-site.xml
+```
 
+在core-site.xml文件的中增加以下内容。
 
+```
+<configuration>
+    <property>
+            <name>fs.defaultFS</name>
+            <value>hdfs://hadoop01:9000</value>
+    </property>
+    <property>
+            <name>hadoop.tmp.dir</name>
+            <value>/usr/local/hadoop/temp</value>
+    </property>
+</configuration>
+```
 
+**修改 /usr/local/hadoop/etc/hadoop/hdfs-site.xml**
 
+```
+vi /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+```
 
-##### 修改 /usr/local/hadoop/etc/hadoop/core-site.xml
+在hdfs-site.xml文件的中增加以下内容。
 
-    vi /usr/local/hadoop/etc/hadoop/core-site.xml
-
-在core-site.xml文件的<configuration>中增加以下内容。
-    
-<!---->
-
-    <configuration>
-	    <property>
-                <name>fs.defaultFS</name>
-                <value>hdfs://hadoop01:9000</value>
-        </property>
-        <property>
-                <name>hadoop.tmp.dir</name>
-                <value>/usr/local/hadoop/temp</value>
-        </property>
-	</configuration>
-
-##### 修改 /usr/local/hadoop/etc/hadoop/hdfs-site.xml
-
-    vi /usr/local/hadoop/etc/hadoop/hdfs-site.xml
-
-在hdfs-site.xml文件的<configuration>中增加以下内容。
-    
-    
-<!---->
-
-    <configuration>
-	    <property>
-                <name>dfs.namenode.secondary.http-address</name>
-                <value>hadoop01:9001</value>
-        </property>
-        <property>
-                <name>dfs.namenode.name.dir</name>
-                <value>file://${hadoop.tmp.dir}/dfs/name</value>
-        </property>
-        <property>
-                <name>dfs.datanode.data.dir</name>
-                <value>file://${hadoop.tmp.dir}/dfs/data</value>
-        </property>
-        <property>
-                <name>dfs.replication</name>
-                <value>1</value>
-        </property>
-        <property>
-                <name>dfs.webhdfs.enabled</name>
-                <value>true</value>
-        </property>
-        <property>
-                <name>dfs.permissions</name>
-                <value>false</value>
-        </property>
-        <property>
-                <name>dfs.web.ugi</name>
-               	<value>supergroup</value>
-        </property>
-        <property>
-            <name>dfs.datanode.use.datanode.hostname</name>
+```
+<configuration>
+    <property>
+            <name>dfs.namenode.secondary.http-address</name>
+            <value>hadoop01:9001</value>
+    </property>
+    <property>
+            <name>dfs.namenode.name.dir</name>
+            <value>file://${hadoop.tmp.dir}/dfs/name</value>
+    </property>
+    <property>
+            <name>dfs.datanode.data.dir</name>
+            <value>file://${hadoop.tmp.dir}/dfs/data</value>
+    </property>
+    <property>
+            <name>dfs.replication</name>
+            <value>1</value>
+    </property>
+    <property>
+            <name>dfs.webhdfs.enabled</name>
             <value>true</value>
-        </property>
-    </configuration>
+    </property>
+    <property>
+            <name>dfs.permissions</name>
+            <value>false</value>
+    </property>
+    <property>
+            <name>dfs.web.ugi</name>
+           	<value>supergroup</value>
+    </property>
+    <property>
+        <name>dfs.datanode.use.datanode.hostname</name>
+        <value>true</value>
+    </property>
+</configuration>
+```
 
-##### 修改 /usr/local/hadoop/etc/hadoop/mapred-site.xml
+**修改 /usr/local/hadoop/etc/hadoop/mapred-site.xml**
 
-    vi /usr/local/hadoop/etc/hadoop/mapred-site.xml
- 
-在mapred-site.xml文件的<configuration>中增加以下内容。
-    
+```
+vi /usr/local/hadoop/etc/hadoop/mapred-site.xml
+```
 
-<!---->
+在mapred-site.xml文件的中增加以下内容。
 
-    <configuration>
-        <property>
-                <name>mapreduce.framework.name</name>
-                <value>yarn</value>
-        </property>
-        <property>
-          <name>yarn.app.mapreduce.am.env</name>
-          <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
-        </property>
-        <property>
-          <name>mapreduce.map.env</name>
-          <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
-        </property>
-        <property>
-          <name>mapreduce.reduce.env</name>
-          <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
-        </property>
-    </configuration>
+```
+<configuration>
+    <property>
+            <name>mapreduce.framework.name</name>
+            <value>yarn</value>
+    </property>
+    <property>
+      <name>yarn.app.mapreduce.am.env</name>
+      <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+    </property>
+    <property>
+      <name>mapreduce.map.env</name>
+      <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+    </property>
+    <property>
+      <name>mapreduce.reduce.env</name>
+      <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+    </property>
+</configuration>
+```
 
-##### 修改 /usr/local/hadoop/etc/hadoop/yarn-site.xml
+**修改 /usr/local/hadoop/etc/hadoop/yarn-site.xml**
 
-    vi /usr/local/hadoop/etc/hadoop/yarn-site.xml
+```
+vi /usr/local/hadoop/etc/hadoop/yarn-site.xml
+```
 
-在yarn-site.xml文件的<configuration>中增加以下内容。
-    
-    
-<!---->
+在yarn-site.xml文件的中增加以下内容。
 
-    <configuration>
-        <property>
-                <name>yarn.nodemanager.aux-services</name>
-                <value>mapreduce_shuffle</value>
-        </property>
-        <property>
-                <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
-                <value>org.apache.hadoop.mapred.ShuffleHandler</value>
-        </property>
-    </configuration>
+```
+<configuration>
+    <property>
+            <name>yarn.nodemanager.aux-services</name>
+            <value>mapreduce_shuffle</value>
+    </property>
+    <property>
+            <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+            <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+    </property>
+</configuration>
+```
 
-##### 修改 /usr/local/hadoop/etc/hadoop/workers.sh
+**修改 /usr/local/hadoop/etc/hadoop/workers.sh**
 
-    vi /usr/local/hadoop/etc/hadoop/workers
+```
+vi /usr/local/hadoop/etc/hadoop/workers
+```
 
+works中，保留以下内容
 
-works中，保留以下内容 
-
-    hadoop01
-
-
+```
+hadoop01
+```
 
 #### 1.5.2 设置无密码登录
 
-    ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
-    cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-    chmod 0600 ~/.ssh/authorized_keys
+```
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 0600 ~/.ssh/authorized_keys
+```
 
 #### 1.5.3 启动hadoop
 
-    bin/hdfs namenode -format #格式化HDFS
-    sbin/start-all.sh #启动
+```
+bin/hdfs namenode -format #格式化HDFS
+sbin/start-all.sh #启动
+```
 
-访问<http://ip:9870，看是否可以访问。>
+访问http://ip:9870，看是否可以访问。
