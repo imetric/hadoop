@@ -14,20 +14,26 @@
 3. Python版本：3.7或以上版本
 
 
-
-## 三、实验内容和要求
+## 三、实验前准备
 
 > 首先通过SSH远程连接到服务器，并执行以下命令，进入python的环境
+
+
+### 1.登录服务器
+
+如果服务器是远程（如购买的云服务器），使用用户名hadoop进行登录，可以使用Putty软件远程连接服务器进行操作，详见。
+
+### 2.进入虚拟环境
+
+输入以下命令进入我们创建的虚拟环境 hadoop
 
 ```
 conda activate hadoop
 ```
 
+### 3.在本地创建hdfs.py
 
-
-### 1.Python代码
-
-将以下文件保存到服务器上，并命名为 hdfs.py
+在本地创新一个hdfs.py文件，其中hdfs是文件名，可以自定义。hdfs.py文件的代码如下：
 
 ``` 
 from pyarrow import fs
@@ -35,10 +41,17 @@ hdfs = fs.HadoopFileSystem(host="hadoop01",port=9000)
 hdfs.create_dir('/my')
 ```
 
-保存后，进入文件所在目录，执行以下
-```
-python hdfs.py
-```
+### 4.使用Filezila软件进行文件传输
+
+编写的Python代码可以在本地电脑上编辑，编辑完成后，上传到服务器上运行。
+
+本地文件可以使用Filezila软件上传到服务器。
+
+
+
+## 三、实验内容和要求
+
+
 
 编程实现以下指定功能，并利用Hadoop提供的Shell命令完成相同任务：
 
