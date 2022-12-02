@@ -197,6 +197,8 @@ sudo vi /etc/hosts
 10.206.0.2 hadoop01
 ```
 
+然后依次输入 Esc， :wq，回车
+
 ## 三、Hadoop配置
 
 ### 3.1 Hadoop单机部署

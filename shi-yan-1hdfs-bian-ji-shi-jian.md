@@ -20,7 +20,41 @@
 
 如果服务器是远程（如购买的云服务器），使用用户名hadoop进行登录，可以使用Putty软件远程连接服务器进行操作，详见。
 
-### 2.进入虚拟环境
+### 2. 如果使用老师的服务器
+
+#### 2.1  修改hosts
+
+输入以下命令，进入hosts文件编辑界面。hosts文件存在于/etc/hosts
+
+```
+sudo vi /etc/hosts
+```
+
+删除以下内容
+
+```
+127.0.1.1 localhost.localdomain VM-0-2-ubuntu
+```
+
+增加以一上内容，这样就可以直接使用hadoop01来访问这台主机了。注意10.206.0.2为你主机的内网IP地址、
+
+```
+10.206.0.2 hadoop01
+```
+
+然后依次输入 **Esc**， **:wq**，**回车**
+
+#### 2.2 重新配置无密码登录
+
+```
+rm -r ~/.ssh
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 0600 ~/.ssh/authorized_keys
+ssh hadoop01
+```
+
+### 3.进入虚拟环境
 
 输入以下命令进入我们创建的虚拟环境 hadoop
 
@@ -28,7 +62,7 @@
 conda activate hadoop
 ```
 
-### 3.在本地创建hdfs.py
+### 4.在本地创建hdfs.py
 
 在本地创新一个hdfs.py文件，其中hdfs是文件名，可以自定义。hdfs.py文件的代码如下：
 
@@ -38,7 +72,7 @@ hdfs = fs.HadoopFileSystem(host="hadoop01",port=9000)
 hdfs.create_dir('/my')
 ```
 
-### 4.使用Filezila软件进行文件传输
+### 5.使用Filezila软件进行文件传输
 
 编写的Python代码可以在本地电脑上编辑，编辑完成后，上传到服务器上运行。
 
