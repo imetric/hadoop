@@ -25,3 +25,7 @@ description: 桂林电子科技大学 《大数据处理技术》实验室导书
 {% content-ref url="shi-yan-4spark-an-zhuang-bu-shu-yu-bian-cheng.md" %}
 [shi-yan-4spark-an-zhuang-bu-shu-yu-bian-cheng.md](shi-yan-4spark-an-zhuang-bu-shu-yu-bian-cheng.md)
 {% endcontent-ref %}
+
+{% content-ref url="shi-yong-lao-shi-fen-pei-de-teng-xun-yun-fu-wu-qi.md" %}
+[shi-yong-lao-shi-fen-pei-de-teng-xun-yun-fu-wu-qi.md](shi-yong-lao-shi-fen-pei-de-teng-xun-yun-fu-wu-qi.md)
+{% endcontent-ref %}
