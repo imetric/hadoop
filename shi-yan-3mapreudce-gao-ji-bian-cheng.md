@@ -118,8 +118,8 @@ cd ~/code/test2
 
 ```
 cd ~/code/test2
-wget https://raw.githubusercontent.com/imetric/hadoop/master/data/test2/A.txt
-wget https://raw.githubusercontent.com/imetric/hadoop/master/data/test2/B.txt
+wget https://labeye.oss-cn-beijing.aliyuncs.com/hadoop/test2/A.txt
+wget https://labeye.oss-cn-beijing.aliyuncs.com/hadoop/test2/B.txt
 
 ```
 
@@ -234,8 +234,8 @@ hadoop实现join操作的思路
 cd ~/code/
 mkdir join 
 cd join
-wget https://raw.githubusercontent.com/imetric/hadoop/master/data/join/pd.txt
-wget https://raw.githubusercontent.com/imetric/hadoop/master/data/join/order.txt
+wget https://labeye.oss-cn-beijing.aliyuncs.com/hadoop/join/pd.txt
+wget https://labeye.oss-cn-beijing.aliyuncs.com/hadoop/join/order.txt
 
 ```
 
@@ -280,4 +280,4 @@ if __name__ == '__main__':
 ## 参考内容
 
 * [https://raw.githubusercontent.com/Yelp/mrjob/master/mrjob/examples/](https://github.com/Yelp/mrjob/blob/master/mrjob/examples)
-*
+

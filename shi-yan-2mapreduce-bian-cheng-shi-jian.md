@@ -112,7 +112,7 @@ cd ~/code
 
 ```
 cd ~/code
-wget https://raw.githubusercontent.com/imetric/hadoop/master/data/word.txt
+wget https://labeye.oss-cn-beijing.aliyuncs.com/hadoop/word.txt
 ```
 
 ### 2.编写wordcount代码
