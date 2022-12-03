@@ -22,41 +22,11 @@
 
 ### 2. 如果使用老师的服务器
 
-#### 2.1  修改hosts
+如果第一次使用老师分配的云服务器，需要先配置好云服务器。配置方法参考：
 
-输入以下命令，进入hosts文件编辑界面。hosts文件存在于/etc/hosts
-
-```
-sudo vi /etc/hosts
-```
-
-删除以下内容
-
-```
-127.0.1.1 localhost.localdomain VM-0-2-ubuntu
-```
-
-增加以一上内容，这样就可以直接使用hadoop01来访问这台主机了。注意10.206.0.2为你主机的内网IP地址、
-
-```
-10.206.0.2 hadoop01
-```
-
-然后依次输入 **Esc**， **:wq**，**回车**
-
-#### 2.2 重新配置无密码登录
-
-```
-rm -r ~/.ssh
-ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
-cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-chmod 0600 ~/.ssh/authorized_keys
-ssh hadoop01
-```
-
-#### 2.3 修改自己电脑的hosts文件
-
-
+{% content-ref url="shi-yong-lao-shi-fen-pei-de-teng-xun-yun-fu-wu-qi.md" %}
+[shi-yong-lao-shi-fen-pei-de-teng-xun-yun-fu-wu-qi.md](shi-yong-lao-shi-fen-pei-de-teng-xun-yun-fu-wu-qi.md)
+{% endcontent-ref %}
 
 ### 3.进入虚拟环境
 
