@@ -6,3 +6,4 @@
 * [实验2、MapReduce编程实践](shi-yan-2mapreduce-bian-cheng-shi-jian.md)
 * [实验3、MapReudce高级编程](shi-yan-3mapreudce-gao-ji-bian-cheng.md)
 * [实验4、Spark安装部署与编程](shi-yan-4spark-an-zhuang-bu-shu-yu-bian-cheng.md)
+* [使用老师分配的腾讯云服务器](shi-yong-lao-shi-fen-pei-de-teng-xun-yun-fu-wu-qi.md)
