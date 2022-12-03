@@ -54,6 +54,10 @@ chmod 0600 ~/.ssh/authorized_keys
 ssh hadoop01
 ```
 
+#### 2.3 修改自己电脑的hosts文件
+
+
+
 ### 3.进入虚拟环境
 
 输入以下命令进入我们创建的虚拟环境 hadoop
