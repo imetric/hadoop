@@ -4,7 +4,7 @@
 
 IP地址见下面文档。
 
-{% file src=".gitbook/assets/学生名单及服务器IP.xlsx" %}
+{% file src=".gitbook/assets/学生名单及服务器IP_12.04.xlsx" %}
 
 ![](<.gitbook/assets/image (1).png>)
 
@@ -16,7 +16,7 @@ IP地址见下面文档。
 
 #### 下载安装Putty软件
 
-{% file src=".gitbook/assets/putty.exe" %}
+{% file src=".gitbook/assets/putty-64bit-0.78-installer.msi.zip" %}
 Putty安装包
 {% endfile %}
 
@@ -87,3 +87,15 @@ ssh hadoop01
 使用浏览器验证Hadoop是否启动成功，在浏览器中访问http://ip:9870，ip改为你的公网IP地址。
 
 ![](<.gitbook/assets/image (2).png>)
+
+## 5. 如遇Hadoop启动出错
+
+如果在执法hadoop启动后，输入jps后显示的进行和老师的不一致，或无法通过网址访问，按以下方式操作
+
+```
+/usr/local/hadoop/sbin/start-all.sh #停止Hadoop
+rm -r /usr/local/hadoop/logs #删除log
+rm -r /usr/local/hadoop/temp #删除临时文件
+/usr/local/hadoop/bin/hdfs namenode -format #格式化HDFS
+/usr/local/hadoop/sbin/start-all.sh #启动
+```
