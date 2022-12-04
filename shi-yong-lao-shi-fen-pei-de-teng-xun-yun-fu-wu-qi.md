@@ -93,7 +93,7 @@ ssh hadoop01
 如果在执法hadoop启动后，输入jps后显示的进行和老师的不一致，或无法通过网址访问，按以下方式操作
 
 ```
-/usr/local/hadoop/sbin/start-all.sh #停止Hadoop
+/usr/local/hadoop/sbin/stop-all.sh #停止Hadoop
 rm -r /usr/local/hadoop/logs #删除log
 rm -r /usr/local/hadoop/temp #删除临时文件
 /usr/local/hadoop/bin/hdfs namenode -format #格式化HDFS
