@@ -215,15 +215,15 @@ sudo vi /etc/hosts
 #### 3.1.1 下载
 
 ```
-wget https://mirrors.bfsu.edu.cn/apache/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz
+wget https://mirrors.bfsu.edu.cn/apache/hadoop/common/hadoop-3.4.1/hadoop-3.4.1.tar.gz
 ```
 
 #### 3.1.2 解压
 
 ```
-sudo tar -zxvf hadoop-3.3.4.tar.gz -C /usr/local/
+sudo tar -zxvf hadoop-3.4.1.tar.gz -C /usr/local/
 cd /usr/local
-sudo mv  hadoop-3.3.4    hadoop #重命名为hadoop
+sudo mv  hadoop-3.4.1    hadoop #重命名为hadoop
 sudo chown -R hadoop ./hadoop                        #修改文件权限
 ```
 
@@ -270,7 +270,7 @@ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 cd /usr/local/hadoop/
 mkdir input
 cp etc/hadoop/*.xml input
-bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.4.jar grep input output 'dfs[a-z.]+'
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.1.jar grep input output 'dfs[a-z.]+'
 cat output/*
 ```
 
