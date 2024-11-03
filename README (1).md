@@ -220,6 +220,7 @@ wget https://mirrors.bfsu.edu.cn/apache/hadoop/common/hadoop-3.4.1/hadoop-3.4.1.
 
 #### 3.1.2 解压
 
+
 ```
 sudo tar -zxvf hadoop-3.4.1.tar.gz -C /usr/local/
 cd /usr/local
@@ -227,7 +228,7 @@ sudo mv  hadoop-3.4.1    hadoop #重命名为hadoop
 sudo chown -R hadoop ./hadoop                        #修改文件权限
 ```
 
-#### 3.1.3 配置Hadoop环境
+#### 3.1.3 配置Hadoop环 境
 
 ```
 vi ~/.bashrc
