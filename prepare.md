@@ -65,9 +65,7 @@ description: 安装部署Hadoop，安装开发环境等
 
 #### 下载安装Putty软件
 
-{% file src=".gitbook/assets/putty.exe" %}
-Putty安装包
-{% endfile %}
+
 
 运行 putty.exe，在程序界面内输入服务器 IP 地址和端口（22 是 SSH 默认端口），选中 SSH 连接类型，设置连接会话名称及点击保存，然后点击 Open 按钮开始连接登录。
 
