@@ -6,8 +6,8 @@ description: 桂林电子科技大学 《大数据处理技术》实验室导书
 
 
 
-{% content-ref url="README (1).md" %}
-[README (1).md](<README (1).md>)
+{% content-ref url="prepare.md" %}
+[prepare.md](<prepare.md>)
 {% endcontent-ref %}
 
 {% content-ref url="shi-yan-1hdfs-bian-ji-shi-jian.md" %}
