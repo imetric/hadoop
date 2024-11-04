@@ -47,12 +47,6 @@ Putty安装包
 
 执行时，会提示输入密码。密码是hadoop用户的密码 Guet@1130182
 
-执行完成后，在浏览器中输入  http://ip:9870检查Hadoop是否启动成功。如下图所示，如果Live nodes为1，表示启动成功。
-
-<figure><img src=".gitbook/assets/WechatIMG1134.jpg" alt=""><figcaption></figcaption></figure>
-
-
-
 ## 4. 检查Hadoop是否启动成功
 
 输入以下命令启动
@@ -65,9 +59,11 @@ jps
 
 ![](.gitbook/assets/image.png)
 
-使用浏览器验证Hadoop是否启动成功，在浏览器中访问http://ip:9870，ip改为你的公网IP地址。
+使用浏览器验证Hadoop是否启动成功，在浏览器中访问http://ip:9870，ip改为你的公网IP地址。如下图所示，如果Live nodes为1，表示启动成功。
 
 ![](<.gitbook/assets/image (2).png>)
+
+<figure><img src=".gitbook/assets/WechatIMG1134.jpg" alt=""><figcaption></figcaption></figure>
 
 ## 5. 如遇Hadoop启动出错
 
