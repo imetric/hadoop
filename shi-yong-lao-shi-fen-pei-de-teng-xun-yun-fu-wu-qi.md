@@ -37,47 +37,28 @@ Putty安装包
 
 <figure><img src=".gitbook/assets/d110760f8731eb7b842042f37a51f2ec.png" alt=""><figcaption></figcaption></figure>
 
-## 3. 修改服务器hosts
+## 3. 初始化服务器
 
-输入以下命令，进入hosts文件编辑界面。hosts文件存在于/etc/hosts
-
-```
-sudo vi /etc/hosts
-```
-
-删除以下内容
+输入以下命令&#x20;
 
 ```
-127.0.1.1 localhost.localdomain VM-0-2-ubuntu
+./start.sh
 ```
 
-增加以一上内容，这样就可以直接使用hadoop01来访问这台主机了。注意10.206.0.2为你主机的内网IP地址
+执行时，会提示输入密码。密码是hadoop用户的密码 Guet@1130182
 
-```
-10.206.0.98 hadoop01
-```
+执行完成后，在浏览器中输入  http://ip:9870检查Hadoop是否启动成功。如下图所示，如果Live nodes为1，表示启动成功。
 
-![](<.gitbook/assets/image (1).png>)
+<figure><img src=".gitbook/assets/WechatIMG1134.jpg" alt=""><figcaption></figcaption></figure>
 
-然后依次输入 **Esc**， **:wq**，**回车**
 
-## 3. 重新配置无密码登录
 
-```
-rm -r ~/.ssh
-ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
-cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-chmod 0600 ~/.ssh/authorized_keys
-ssh hadoop01
-```
-
-## 4. 启动Hadoop
+## 4. 检查Hadoop是否启动成功
 
 输入以下命令启动
 
 ```
-/usr/local/hadoop/bin/hdfs namenode -format #格式化HDFS
-/usr/local/hadoop/sbin/start-all.sh #启动
+jps
 ```
 
 输入jps命令，查询Hadoop是否启动成功，如果启动成果，输入jps后，会显示如下内容。
