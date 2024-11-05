@@ -1,9 +1,8 @@
 # 实验4、Spark安装部署与编程
 
 ## 一、实验目的
-1.	通过实验掌握基本的Spark编程方法；
 
-
+1. 通过实验掌握基本的Spark编程方法；
 
 ## 二、实验平台
 
@@ -30,12 +29,14 @@ sudo apt install scala
 ```
 sudo vi /etc/profile 
 ```
+
 在/etc/profile文件中增加以下代码
 
 ```
 export SCALA_HOME=/usr/bin/scala
 export PATH=$PATH:$SCALA_HOME/bin
 ```
+
 之后使用命令 source /etc/profile，使文件修改生效。
 
 ```
@@ -44,24 +45,30 @@ source /etc/profile
 
 ### 2 部署Spark集群
 
-
 #### 2.1 下载Spark
+
 在hadoop01节点上，执行以下操作：
+
 ```
-wget https://mirrors.bfsu.edu.cn/apache/spark/spark-3.3.1/spark-3.3.1-bin-hadoop3-scala2.13.tgz
-sudo tar -zxvf spark-3.3.1-bin-hadoop3-scala2.13.tgz -C /usr/local/
+cd ~/
+sudo tar -zxvf spark-3.5.3-bin-hadoop3-scala2.13.tgz -C /usr/local/
 cd /usr/local
-sudo mv  spark-3.3.1-bin-hadoop3-scala2.13    spark #重命名为 spark
+sudo mv  spark-3.5.3-bin-hadoop3-scala2.13    spark #重命名为 spark
 sudo chown -R hadoop ./spark                        #修改文件权限
 ```
+
 #### 2.2 配置Spark
+
 配置spark-env.sh文件
+
 ```
 cd /usr/local/spark
 cp conf/spark-env.sh.template spark-env.sh
 vi conf/spark-env.sh
 ```
+
 将以下内容添加到spark-env.sh文件中
+
 ```
 export SCALA_HOME=/usr/bin/scala
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
@@ -70,15 +77,16 @@ export SPARK_MASTER_PORT=7077
 ```
 
 配置slaves
+
 ```
 vi conf/slaves
 ```
+
 将以下内容添加到slaves文件中
+
 ```
 hadoop01
 ```
-
-
 
 ### 3 使用Spark Shell编写代码
 
@@ -90,13 +98,17 @@ bin/spark-shell
 ```
 
 #### 3.2 加载text文件
+
 spark创建sc，可以加载本地文件和HDFS文件创建RDD。这里用Spark自带的本地文件README.md文件测试。
+
 ```
 val textFile=sc.textFile("file:///usr/local/spark/README.md")
 ```
+
 加载HDFS文件和本地文件都是使用textFile，区别是添加前缀(hdfs://和file://)进行标识。如： hdfs://hadoop01:9000/
 
 #### 3.3 wordcount实例
+
 ```
 val textFile = sc.textFile("hdfs://hadoop01:9000/spark/README.md")
 val counts = textFile.flatMap(line => line.split(" "))
@@ -104,7 +116,9 @@ val counts = textFile.flatMap(line => line.split(" "))
                  .reduceByKey(_ + _)
 counts.saveAsTextFile("hdfs://hadoop01:9000/spark/output")
 ```
+
 #### 3.4 Pi 估算
+
 ```
 val count = sc.parallelize(1 to NUM_SAMPLES).filter { _ =>
   val x = math.random
@@ -113,7 +127,6 @@ val count = sc.parallelize(1 to NUM_SAMPLES).filter { _ =>
 }.count()
 println(s"Pi is roughly ${4.0 * count / NUM_SAMPLES}")
 ```
-
 
 ## 参考资料
 
