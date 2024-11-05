@@ -47,6 +47,43 @@ Putty安装包
 
 执行时，会提示输入密码。密码是hadoop用户的密码 Guet@1130182
 
+start.sh已存储在服务器，内容如下：
+
+```
+#!/bin/bash  
+  
+# 获取当前主机的IP地址（假设使用第一个非本地回环地址）  
+local_ip=$(hostname -I | awk '{print $1}')  
+  
+# 主机名  
+hostname="hadoop01"  
+  
+# hosts文件路径  
+hosts_file="/etc/hosts"  
+  
+# 检查当前IP是否已经存在于hosts文件中  
+grep -q "^[0-9\.]\+\s*${hostname}$" "${hosts_file}"  
+  
+if [ $? -eq 0 ]; then  
+    echo "${hostname} 的IP地址 ${local_ip} 已经存在于 /etc/hosts 文件中。"  
+else  
+    # 添加新的IP地址和主机名到hosts文件  
+    sudo bash -c  "echo \"${local_ip} ${hostname}\" >> \"${hosts_file}\""  
+    echo "${hostname} 的IP地址 ${local_ip} 已添加到 /etc/hosts 文件中。"  
+fi
+
+rm -r ~/.ssh
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 0600 ~/.ssh/authorized_keys
+
+/usr/local/hadoop/sbin/stop-all.sh
+rm -r /usr/local/hadoop/logs
+rm -r /usr/local/hadoop/temp
+/usr/local/hadoop/bin/hdfs namenode -format
+/usr/local/hadoop/sbin/start-all.sh
+```
+
 ## 4. 检查Hadoop是否启动成功
 
 输入以下命令启动
