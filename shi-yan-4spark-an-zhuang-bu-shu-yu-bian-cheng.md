@@ -130,4 +130,7 @@ println(s"Pi is roughly ${4.0 * count / NUM_SAMPLES}")
 
 ## 参考资料
 
-1. http://spark.apache.org/examples.html
+1. [http://spark.apache.org/examples.html](http://spark.apache.org/examples.html)
+2. [https://spark.apache.org/docs/latest/rdd-programming-guide.html#working-with-key-value-pairs\
+   ](https://spark.apache.org/docs/latest/rdd-programming-guide.html#working-with-key-value-pairs)
+3. [https://spark.apache.org/docs/latest/rdd-programming-guide.html#transformations](https://spark.apache.org/docs/latest/rdd-programming-guide.html#transformations)
